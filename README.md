@@ -1,13 +1,16 @@
 # Flask Task Manager
 
-A full-stack task manager built with Flask (Python) and JavaScript, featuring asynchronous state management, custom drag-and-drop functionality, API-based frontend/backend communication, and a responsive UI.
+![App Screenshot](screenshot.png)
+
+A full-stack task manager I built to learn how to connect a Python Flask backend with a JavaScript frontend. It features drag and drop reordering built from scratch and saves data to a local JSON file.
 
 ## Features
 
-- Dynamic creation, reading, updating, and deletion of tasks
-- Custom drag-and-drop reordering with no external libraries
-- Persistent state stored in a JSON backend
-- Responsive UI for both mobile and desktop
+- **Live Updates:** Tasks can be added, deleted, reordered, and checked off using Javascript Fetch API.
+- **Drag and Drop:** I wrote a custom algorithm that uses mouse coordinates to reorder tasks.
+- **Persistence:** Data is saved to a `tasks.json` file.
+- **UI:** Works on both mobile and desktop.
+- **Themes:** Includes a small Easter Egg where typing specific dates changes the background color.
 
 ## Tech Stack
 
@@ -45,7 +48,7 @@ python3 app.py
 
 ### 5. Access the Application
 
-Open your browser and navigate to the URL displayed in the terminal (typically `http://localhost:5000`).
+Open your browser and navigate to the URL displayed in the terminal.
 
 ## Future Improvements
 
