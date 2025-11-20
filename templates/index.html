@@ -4,25 +4,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/style.css?v=2">
 </head>
 
 <body>
 
-<div class="container">
-<h1>Task Manager</h1>
+    <div class="app-card">
+        <h1>Task Manager</h1>
+        <div class="inputRow">
+        <input type="text" id="inputTask" placeholder="Enter a task">
+        <button id="addTask">╋</button>
+        </div>
+        <br>
+        <ul id="taskSpace"></ul>
 
-<div class="inputRow">
-<input type="text" id="inputTask" placeholder="Enter a task">
-<button id="addTask">Create task</button>
-</div>
 
-<br>
-<ul id="taskSpace"></ul>
+
 </div>
 
 <script src="../static/script.js"></script>
 
 </body>
-
 </html>

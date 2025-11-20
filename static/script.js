@@ -6,7 +6,7 @@ const input = document.getElementById('inputTask')
 //load tasks
 window.addEventListener('DOMContentLoaded',async()=>{
     fetch('/tasks-json').then(res=>res.json()).then(data=>{
-        data.forEach((task, index)=> createTaskElement(task,index))
+        data.reverse().forEach((task, index)=> createTaskElement(task,index))
     })
     
     const res = await fetch('/color')
@@ -29,7 +29,7 @@ addtaskbtn.addEventListener('click', async ()=>{
             await set_color('#ffb6c1')
         }
         if(input.value == '-1/13/2007'){
-            await set_color('white')
+            await set_color('black')
         }
         
         input.value = ''
@@ -50,31 +50,43 @@ function createTaskElement(task, index){
     const text = document.createElement('span')
     const check = document.createElement('input')
     const trash = document.createElement('span')
+    newTask.dataset.id = task.id
+    const taskId = newTask.dataset.id
+    
     
     trash.className = 'trash-icon'
     trash.textContent = "🗑️"
-    trash.style.marginLeft = '30px'
+
     
     check.className = 'check'
     check.type = 'checkbox'
-    check.style.transform = 'scale(2)'
-    check.style.marginRight = '30px'
 
-    if (task.completed) newTask.classList.add('completed')
+
+    if (task.completed){
+        newTask.classList.add('completed')
+        check.checked = true
+
+    } 
+        
     
     text.textContent = task.title
+    text.className = 'task-text'
 
     newTask.appendChild(check)
+
     newTask.appendChild(text)
     newTask.appendChild(trash)
-    taskcontainer.appendChild(newTask)
+
+    newTask.draggable=true
+
+    taskcontainer.prepend(newTask)
 
     check.addEventListener('change', async()=>{
         newTask.classList.toggle('completed')
         await fetch('/update',{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({index: index, completed: check.checked})
+            body: JSON.stringify({id: taskId, completed: check.checked})
         })
 
     })
@@ -83,9 +95,26 @@ function createTaskElement(task, index){
         await fetch('/delete',{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({index: index})
+            body: JSON.stringify({id: taskId})
         })
         newTask.remove()
+    })
+
+    newTask.addEventListener('dragstart', async()=>{
+        newTask.classList.add('dragging')
+        document.body.style.cursor = 'grabbing'
+    })
+   
+    newTask.addEventListener('dragend', async()=>{
+      
+        newTask.classList.remove('dragging')
+        document.body.style.cursor = 'default'
+        const taskorder = Array.from(taskcontainer.children).map(li=> li.dataset.id)
+            await fetch('/reorder',{
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({order:taskorder})
+            })
     })
   
 
@@ -103,6 +132,27 @@ function createTaskElement(task, index){
     }
 
 
+ taskcontainer.addEventListener('dragover', async(e)=>{
+          e.preventDefault()
+            const ypos = e.clientY
+            
+            for(var i = 0;i<taskcontainer.children.length;i += 1){
+                const li = taskcontainer.children[i]
+                const box = li.getBoundingClientRect()
+                const dragging = document.querySelector('.dragging')
+                if (ypos<=box.top+box.height/2){
+                    taskcontainer.insertBefore(dragging,taskcontainer.children[i])
+                    
+                    break
+                }else{
+                    taskcontainer.appendChild(dragging)
+                }
 
+
+            }
+            
+            
+        })
+    
 
 
