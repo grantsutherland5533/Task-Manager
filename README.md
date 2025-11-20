@@ -23,7 +23,7 @@ A full-stack task manager I built to learn how to connect a Python Flask backend
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/task-manager.git
+git clone https://github.com/grantsutherland/task-manager.git
 cd task-manager
 ```
 
